@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <fstream>
-
+#include <windows.h>
 using namespace std;
 
 int main()
@@ -31,32 +31,34 @@ int main()
     }
     file.close();
 
-    //РАСЧЁТ СОСЕДЕЙ
-    for (int m = 1; m <= M; m++) for (int n = 1; n <= N; n++) {
-        unsigned tmp = 0;
-        if (field[m - 1][n - 1].live) tmp++;
-        if (field[m - 1][n].live) tmp++;
-        if (field[m - 1][n + 1].live) tmp++;
-        if (field[m][n - 1].live) tmp++;
-        if (field[m][n + 1].live) tmp++;
-        if (field[m + 1][n - 1].live) tmp++;
-        if (field[m + 1][n].live) tmp++;
-        if (field[m + 1][n + 1].live) tmp++;
-        field[m][n].neighbors = tmp;
-    }
-
-    //ПЕРЕСЧЕТ ЖИВЫХ КЛЕТОК
-    for (int m = 1; m <= M; m++) for (int n = 1; n <= N; n++) {
-        if (field[m][n].live && field[m][n].neighbors != 2 && field[m][n].neighbors != 3) field[m][n].live = false;
-        if (!field[m][n].live && field[m][n].neighbors == 3) field[m][n].live = true;
-    }
-
-    //ВЫВОД 
-    for (int m = 1; m <= M; m++) {
-        for (int n = 1; n <= N; n++) {
-            if (field[m][n].live) cout << (char)254 << " ";
-            else cout << "  ";
+    while (true) {
+        Sleep(300);
+        system("cls");
+        //ВЫВОД 
+        for (int m = 1; m <= M; m++) {
+            for (int n = 1; n <= N; n++) {
+                if (field[m][n].live) cout << (char)254 << " ";
+                else cout << "  ";
+            }
+            cout << endl;
         }
-        cout << endl;
+        //РАСЧЁТ СОСЕДЕЙ
+        for (int m = 1; m <= M; m++) for (int n = 1; n <= N; n++) {
+            unsigned tmp = 0;
+            if (field[m - 1][n - 1].live) tmp++;
+            if (field[m - 1][n].live) tmp++;
+            if (field[m - 1][n + 1].live) tmp++;
+            if (field[m][n - 1].live) tmp++;
+            if (field[m][n + 1].live) tmp++;
+            if (field[m + 1][n - 1].live) tmp++;
+            if (field[m + 1][n].live) tmp++;
+            if (field[m + 1][n + 1].live) tmp++;
+            field[m][n].neighbors = tmp;
+        }
+        //ПЕРЕСЧЕТ ЖИВЫХ КЛЕТОК
+        for (int m = 1; m <= M; m++) for (int n = 1; n <= N; n++) {
+            if (field[m][n].live && field[m][n].neighbors != 2 && field[m][n].neighbors != 3) field[m][n].live = false;
+            if (!field[m][n].live && field[m][n].neighbors == 3) field[m][n].live = true;
+        }
     }
 }
