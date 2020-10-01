@@ -6,7 +6,7 @@ using namespace std;
 int main()
 {
     int moves; //количесто ходов
-    cout << "Enter the number of moves: " << endl;
+    cout << "Enter the number of moves: ";
     cin >> moves;
 
     //СТРУКТУРА КЛЕТКИ
@@ -39,30 +39,38 @@ int main()
     }
     file.close();
 
-    //РАСЧЁТ СОСЕДЕЙ
-    for (int m = 1; m <= M; m++) for (int n = 1; n <= N; n++) {
-        unsigned tmp = 0;
-        if (field[m - 1][n - 1].live) tmp++;
-        if (field[m - 1][n].live) tmp++;
-        if (field[m - 1][n + 1].live) tmp++;
-        if (field[m][n - 1].live) tmp++;
-        if (field[m][n + 1].live) tmp++;
-        if (field[m + 1][n - 1].live) tmp++;
-        if (field[m + 1][n].live) tmp++;
-        if (field[m + 1][n + 1].live) tmp++;
-        field[m][n].neighbors = tmp;
-    }
-
-    //ПЕРЕСЧЕТ(ПОДСЧЁТ) ЖИВЫХ КЛЕТОК 
-    for (int m = 1; m <= M; m++) for (int n = 1; n <= N; n++) {
-        if (field[m][n].live && field[m][n].neighbors != 2 && field[m][n].neighbors != 3) {
-            living_cells--;
-            field[m][n].live = false;
+    int passed_moves = 0; //сделано ходов
+    while (moves--) {
+        passed_moves++;
+        if (living_cells == 0) {
+            cout << "Dead after " + passed_moves;
+            cout << " moves";
+            return 0;
         }
-        if (!field[m][n].live && field[m][n].neighbors == 3) {
-            field[m][n].live = true;
-            living_cells++;
+        //РАСЧЁТ СОСЕДЕЙ
+        for (int m = 1; m <= M; m++) for (int n = 1; n <= N; n++) {
+            unsigned tmp = 0;
+            if (field[m - 1][n - 1].live) tmp++;
+            if (field[m - 1][n].live) tmp++;
+            if (field[m - 1][n + 1].live) tmp++;
+            if (field[m][n - 1].live) tmp++;
+            if (field[m][n + 1].live) tmp++;
+            if (field[m + 1][n - 1].live) tmp++;
+            if (field[m + 1][n].live) tmp++;
+            if (field[m + 1][n + 1].live) tmp++;
+            field[m][n].neighbors = tmp;
+        }
+        //ПЕРЕСЧЕТ(ПОДСЧЁТ) ЖИВЫХ КЛЕТОК 
+        for (int m = 1; m <= M; m++) for (int n = 1; n <= N; n++) {
+            if (field[m][n].live && field[m][n].neighbors != 2 && field[m][n].neighbors != 3) {
+                living_cells--;
+                field[m][n].live = false;
+            }
+            if (!field[m][n].live && field[m][n].neighbors == 3) {
+                field[m][n].live = true;
+                living_cells++;
+            }
         }
     }
-    return 0;
+    cout << "Alive!";
 }
