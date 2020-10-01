@@ -43,7 +43,8 @@ int main()
     while (moves--) {
         passed_moves++;
         if (living_cells == 0) {
-            cout << "Dead after " + passed_moves;
+            cout << "Dead after ";
+            cout << passed_moves;
             cout << " moves";
             return 0;
         }
