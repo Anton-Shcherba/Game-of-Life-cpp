@@ -1,29 +1,26 @@
 ﻿#include <iostream>
 #include <fstream>
-#include <vector>
-#include <sstream>
-#include <windows.h>
+
+using namespace std;
 
 int main()
 {
-    //ПЕРЕМЕННЫЕ
+    //СТРУКТУРА КЛЕТКИ
     struct cell {
-        bool live;
-        unsigned neighbors;
+        bool live; //состояние
+        unsigned neighbors; //соседи
     };
 
-    cell field[102][102];
+    cell field[102][102]; //макс.100х100 + рамка из нулей
     for (int m = 0; m < 102; m++) for (int n = 0; n < 102; n++) {
         field[m][n].live = false;
         field[m][n].neighbors = 0;
     }
 
-    int M, N;
-
     //ЧТЕНИЕ
+    int M, N;
     ifstream file("life.txt");
     file >> M >> N;
-
     file.get();
     for (int m = 1; m <= M; m++) {
         for (int n = 1; n <= N; n++) {
@@ -33,4 +30,18 @@ int main()
         file.get();
     }
     file.close();
+
+    //РАСЧЁТ СОСЕДЕЙ
+    for (int m = 1; m <= M; m++) for (int n = 1; n <= N; n++) {
+        unsigned tmp = 0;
+        if (field[m - 1][n - 1].live) tmp++;
+        if (field[m - 1][n].live) tmp++;
+        if (field[m - 1][n + 1].live) tmp++;
+        if (field[m][n - 1].live) tmp++;
+        if (field[m][n + 1].live) tmp++;
+        if (field[m + 1][n - 1].live) tmp++;
+        if (field[m + 1][n].live) tmp++;
+        if (field[m + 1][n + 1].live) tmp++;
+        field[m][n].neighbors = tmp;
+    }
 }
